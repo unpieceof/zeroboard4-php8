@@ -1355,7 +1355,7 @@
 		if($isold)
 			$rs = zb_query("SELECT old_password('$str')");
 		else
-			$rs = zb_query("SELECT password('$str')");
+			$rs = zb_query("SELECT CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$str')))))");
 		$tmp=mysql_fetch_array($rs);
 		mysql_free_result($rs);
 		return $tmp[0];
