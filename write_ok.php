@@ -69,7 +69,7 @@
 //패스워드를 암호화
 	if(strlen($password)) {
 		$password=zb_escape_string($password);
-		$temp=mysql_fetch_array(zb_query("select password('$password')"));
+		$temp=mysql_fetch_array(zb_query("select CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$password')))))"));
 		$password=$temp[0];   
 	}
 

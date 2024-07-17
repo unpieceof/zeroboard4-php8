@@ -41,7 +41,7 @@
 	$comment = isset($comment) ? addslashes(del_html($comment)) : '';
 
 	$que="update $member_table set name='$name'";
-	if($password&&$password1&&$password==$password) $que.=" ,password=password('$password') ";
+	if($password&&$password1&&$password==$password) $que.=" ,password=CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$password'))))) ";
 	if(isset($birth_1)&&isset($birth_2)&&isset($birth_3)&&isset($group['use_birth'])) $que.=",birth='$birth'";
 	if($email) $que.=",email='$email'";
 	$que.=",homepage='$homepage'";

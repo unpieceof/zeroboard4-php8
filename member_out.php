@@ -24,9 +24,9 @@
 	$result=zb_query("select name from $admin_table");
 	while($data=mysql_fetch_array($result)) {
 		// 게시판 테이블에서 삭제
-		zb_query("update $t_board"."_$data['name'] set ismember='0', password=password('".time()."') where ismember='$member[no]'") or error(zb_error());
+		zb_query("update $t_board"."_$data['name'] set ismember='0', password=CONCAT('*', UPPER(SHA1(UNHEX(SHA1('".time()."'))))) where ismember='$member[no]'") or error(zb_error());
 		// 코멘트 테이블에서 삭제
-		zb_query("update $t_comment"."_$data['name'] set ismember='0', password=password('".time()."')  where ismember='$member[no]'") or error(zb_error());
+		zb_query("update $t_comment"."_$data['name'] set ismember='0', password=CONCAT('*', UPPER(SHA1(UNHEX(SHA1('".time()."')))))  where ismember='$member[no]'") or error(zb_error());
 	}
 	*/
 

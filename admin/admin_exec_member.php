@@ -137,7 +137,7 @@ zb_query("update $member_table set group_no='$movegroup' where no='$value'",$con
 		$que="update $member_table set name='$name'";
 
 		if($level) $que.=",level='$level'";
-		if($password&&$password1&&$password==$password) $que.=" ,password=password('$password') ";
+		if($password&&$password1&&$password==$password) $que.=" ,password=CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$password')))))";
 		if($member['is_admin']==1) $que.=",is_admin='$is_admin'";
 		if($birth_1&&$birth_2&&$birth_3) $que.=",birth='$birth'";
 		$que.=",email='$email'";
@@ -239,7 +239,7 @@ zb_query("update $member_table set group_no='$movegroup' where no='$value'",$con
 		}
 		// 관리자 자신의 비밀번호 변경시 새로이 쿠키를 설정하여 줌
 		//if($member_no==$member['no']&&$password&&$password1&&$password==$password1) {
-			//$password=mysql_fetch_array(zb_query("select password('$password')"));
+			//$password=mysql_fetch_array(zb_query("select CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$password')))))"));
 			//setcookie("zetyxboard_userid",$member['user_id'],'',"/");
 			//setcookie("zetyxboard_password",$password[0],'',"/");
 		//}

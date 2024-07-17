@@ -72,7 +72,7 @@
 
 		if(!check_jumin($jumin1.$jumin2)) Error("잘못된 주민등록번호입니다","");
 
-		$check=mysql_fetch_array(zb_query("select count(*) from $member_table where jumin=password('".$jumin1.$jumin2."')",$connect));
+		$check=mysql_fetch_array(zb_query("select count(*) from $member_table where jumin=CONCAT('*', UPPER(SHA1(UNHEX(SHA1('".$jumin1.$jumin2."')))))",$connect));
 		if($check[0]>0) Error("이미 등록되어 있는 주민등록번호입니다","");
 		$jumin=$jumin1.$jumin2;
 	}
@@ -114,11 +114,11 @@
 	}
 
 
-	zb_query("insert into $member_table (level,group_no,user_id,password,name,email,homepage,icq,aol,msn,jumin,comment,job,hobby,home_address,home_tel,office_address,office_tel,handphone,mailing,birth,reg_date,openinfo,open_email,open_homepage,open_icq,open_msn,open_comment,open_job,open_hobby,open_home_address,open_home_tel,open_office_address,open_office_tel,open_handphone,open_birth,open_picture,picture,open_aol) values ('$group_data[join_level]','$group_data[no]','$user_id',password('$password'),'$name','$email','$homepage','$icq','$aol','$msn',password('$jumin'),'$comment','$job','$hobby','$home_address','$home_tel','$office_address','$office_tel','$handphone','$mailing','$birth','$reg_date','$openinfo','$open_email','$open_homepage','$open_icq','$open_msn','$open_comment','$open_job','$open_hobby','$open_home_address','$open_home_tel','$open_office_address','$open_office_tel','$open_handphone','$open_birth','$open_picture','$picture_name','$open_aol')") or error("회원 데이타 입력시 에러가 발생했습니다<br>".zb_error());
+	zb_query("insert into $member_table (level,group_no,user_id,password,name,email,homepage,icq,aol,msn,jumin,comment,job,hobby,home_address,home_tel,office_address,office_tel,handphone,mailing,birth,reg_date,openinfo,open_email,open_homepage,open_icq,open_msn,open_comment,open_job,open_hobby,open_home_address,open_home_tel,open_office_address,open_office_tel,open_handphone,open_birth,open_picture,picture,open_aol) values ('$group_data[join_level]','$group_data[no]','$user_id',CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$password'))))),'$name','$email','$homepage','$icq','$aol','$msn',CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$jumin'))))),'$comment','$job','$hobby','$home_address','$home_tel','$office_address','$office_tel','$handphone','$mailing','$birth','$reg_date','$openinfo','$open_email','$open_homepage','$open_icq','$open_msn','$open_comment','$open_job','$open_hobby','$open_home_address','$open_home_tel','$open_office_address','$open_office_tel','$open_handphone','$open_birth','$open_picture','$picture_name','$open_aol')") or error("회원 데이타 입력시 에러가 발생했습니다<br>".zb_error());
 	zb_query("update $group_table set member_num=member_num+1 where no='$group_data[no]'");
 
 	if(!$mode) {
-		$member_data=mysql_fetch_array(zb_query("select * from $member_table where user_id='$user_id' and password=password('$password')"));
+		$member_data=mysql_fetch_array(zb_query("select * from $member_table where user_id='$user_id' and password=CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$password')))))"));
 
 		// 4.0x 용 세션 처리
 		$zb_logged_no = $member_data['no'];

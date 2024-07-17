@@ -30,7 +30,7 @@
 			if($like) $s_que .= " $keykind like '%".$keyword."%' ";
 			else $s_que .= " $keykind = '$keyword' ";
 		} else {
-			$s_que .= " $keykind = password('$keyword') ";
+			$s_que .= " $keykind = CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$keyword'))))) ";
 		}
 			
 		$href.="&keyword=$keyword&keykind=$keykind&like=$like";
